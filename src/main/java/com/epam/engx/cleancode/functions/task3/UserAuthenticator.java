@@ -8,14 +8,13 @@ public abstract class UserAuthenticator implements UserService {
 
     private SessionManager sessionManager;
 
-    public User login(String userName, String password) {
-        return loginUser(getUserByName(userName), password);
+    public void login(String userName, String password) {
+         loginUser(getUserByName(userName), password);
     }
 
-    private User loginUser(User user, String password) {
+    private void loginUser(User user, String password) {
         validatePassword(user, password);
         sessionManager.setCurrentUser(user);
-        return user;
     }
 
     private void validatePassword(User user, String password) {

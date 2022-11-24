@@ -12,13 +12,12 @@ import java.util.TreeMap;
 
 public abstract class Account implements User {
 
-    private Map<Integer, Level> levelMap = new TreeMap<>();
+    private Map<Integer, Level> answerLimitToLevel = new TreeMap<>();
 
     public Level getActivityLevel() {
         validateIfUserActive();
         int totalAnswersQuantity = calculateTotalNumberOfReviewAnswers(getAllReviews());
         return getLevelByReviewAnswers(totalAnswersQuantity);
-
     }
 
     private void validateIfUserActive() {
@@ -61,14 +60,14 @@ public abstract class Account implements User {
     }
 
     private Level getLevelByLimit(Integer answerLimitNumber) {
-        return this.levelMap.get(answerLimitNumber);
+        return this.answerLimitToLevel.get(answerLimitNumber);
     }
 
     private Set<Integer> getAllLimitsAnswer() {
-        return this.levelMap.keySet();
+        return this.answerLimitToLevel.keySet();
     }
 
     public void setLevelMap(Map<Integer, Level> levelMap) {
-        this.levelMap = levelMap;
+        this.answerLimitToLevel = levelMap;
     }
 }

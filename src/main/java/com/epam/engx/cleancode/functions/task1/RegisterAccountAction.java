@@ -12,6 +12,7 @@ public class RegisterAccountAction {
 
     private static final int ACCOUNT_NAME_LENGTH_LIMIT = 5;
     private static final int ACCOUNT_PASS_LENGTH_LIMIT = 8;
+
     private PasswordChecker passwordChecker;
     private AccountManager accountManager;
 
@@ -21,12 +22,12 @@ public class RegisterAccountAction {
     }
 
     private void validateAccount(Account account) {
-        validateAccountName(account);
-        validateAccountPassword(account);
+        validateAccountName(account.getName());
+        validateAccountPassword(account.getPassword());
     }
 
-    private void validateAccountName(Account account) {
-        if (isValidItemLength(account.getName(), ACCOUNT_NAME_LENGTH_LIMIT)) {
+    private void validateAccountName(String accountName) {
+        if (isValidItemLength(accountName, ACCOUNT_NAME_LENGTH_LIMIT)) {
             throw new WrongAccountNameException();
         }
     }
@@ -35,8 +36,7 @@ public class RegisterAccountAction {
         return item.length() <= lengthLimit;
     }
 
-    private void validateAccountPassword(Account account) {
-        String password = account.getPassword();
+    private void validateAccountPassword(String password) {
         validatePasswordLength(password);
         validateWithPasswordChecker(password);
     }

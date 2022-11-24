@@ -10,31 +10,62 @@ import static com.epam.engx.cleancode.functions.task1.thirdpartyjar.CheckStatus.
 
 public class RegisterAccountAction {
 
-
+    private static final int ACCOUNT_NAME_LENGTH_LIMIT = 5;
+    private static final int ACCOUNT_PASS_LENGTH_LIMIT = 8;
     private PasswordChecker passwordChecker;
     private AccountManager accountManager;
 
     public void register(Account account) {
-        if (account.getName().length() <= 5){
+        validateAccount(account);
+        accountManager.createNewAccount(configureAccountBeforeCreation(account));
+    }
+
+    private void validateAccount(Account account) {
+        validateAccountName(account);
+        validateAccountPassword(account);
+    }
+
+    private void validateAccountName(Account account) {
+        if (isValidItemLength(account.getName(), ACCOUNT_NAME_LENGTH_LIMIT)) {
             throw new WrongAccountNameException();
         }
+    }
+
+    private boolean isValidItemLength(String item, int lengthLimit) {
+        return item.length() <= lengthLimit;
+    }
+
+    private void validateAccountPassword(Account account) {
         String password = account.getPassword();
-        if (password.length() <= 8) {
+        validatePasswordLength(password);
+        validateWithPasswordChecker(password);
+    }
+
+    private void validatePasswordLength(String password) {
+        if (isValidItemLength(password, ACCOUNT_PASS_LENGTH_LIMIT)) {
             throw new TooShortPasswordException();
         }
+    }
+
+    private void validateWithPasswordChecker(String password) {
         if (passwordChecker.validate(password) != OK) {
             throw new WrongPasswordException();
         }
+    }
 
+    private Account configureAccountBeforeCreation(Account account) {
+        account.setAddresses(getAccountAddresses(account));
         account.setCreatedDate(new Date());
-        List<Address> addresses = new ArrayList<Address>();
+        return account;
+    }
+
+    private List<Address> getAccountAddresses(Account account) {
+        List<Address> addresses = new ArrayList<>();
         addresses.add(account.getHomeAddress());
         addresses.add(account.getWorkAddress());
         addresses.add(account.getAdditionalAddress());
-        account.setAddresses(addresses);
-        accountManager.createNewAccount(account);
+        return addresses;
     }
-
 
     public void setAccountManager(AccountManager accountManager) {
         this.accountManager = accountManager;
@@ -44,5 +75,4 @@ public class RegisterAccountAction {
 
         this.passwordChecker = passwordChecker;
     }
-
 }

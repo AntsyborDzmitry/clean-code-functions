@@ -13,18 +13,16 @@ public class DateUtilTest {
 
     private static final int MONTH_SHIFT = -1;
 
-    private DateUtil dateUtil = new DateUtil();
-
     private final Date date = create(2014, 10, 10);
 
     @Test
     public void shouldIncrementDate() {
-        assertEquals("10/11/2014 00:00:00", format(getDirectlyIncrementedDate(dateUtil, date)));
+        assertEquals("10/11/2014 00:00:00", format(getDirectlyIncrementedDate(date)));
     }
 
     @Test
     public void shouldDecrementDate() {
-        assertEquals("10/09/2014 00:00:00", format(getInverseIncrementedDate(dateUtil, date)));
+        assertEquals("10/09/2014 00:00:00", format(getInverseIncrementedDate(date)));
     }
 
     private String format(Date date) {
